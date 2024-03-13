@@ -45,9 +45,9 @@ namespace Coling.API.Afiliados.Implementacion
             throw new NotImplementedException();
         }
 
-        public Task<Persona> ObtenerPersonaById(int id)
+        public async Task<Persona> ObtenerPersonaById(int id)
         {
-            throw new NotImplementedException();
+            return await contexto.Personas.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
