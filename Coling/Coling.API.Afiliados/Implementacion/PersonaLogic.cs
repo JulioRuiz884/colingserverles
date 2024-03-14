@@ -18,9 +18,18 @@ namespace Coling.API.Afiliados.Implementacion
             this.contexto = contexto;
         }
 
-        public Task<bool> EliminarPersona(int id)
+        public async Task<bool> EliminarPersona(int id)
         {
-            throw new NotImplementedException();
+            bool sw = false;
+            Persona personaEliminar = await contexto.Personas.FirstOrDefaultAsync(x => x.Id == id);
+            if (personaEliminar != null)
+            {
+                contexto.Remove(personaEliminar);
+
+                await contexto.SaveChangesAsync();
+                return sw = true;
+            }
+            else { return sw; }
         }
 
         public async Task<bool> InsertarPersona(Persona persona)
@@ -40,9 +49,22 @@ namespace Coling.API.Afiliados.Implementacion
             return await contexto.Personas.ToListAsync();
         }
 
-        public Task<bool> ModificarPersona(Persona persona, int id)
+        public async Task<bool> ModificarPersona(Persona persona, int id)
         {
-            throw new NotImplementedException();
+            bool sw = false;
+            Persona personamod = await contexto.Personas.FirstOrDefaultAsync(x => x.Id == id);
+            if (personamod != null)
+            {
+                personamod.Nombre = persona.Nombre;
+                personamod.Apellidos = persona.Apellidos;
+                personamod.FechaNacimiento = persona.FechaNacimiento;
+                personamod.Foto = persona.Foto;
+                personamod.Estado = persona.Estado;
+
+                await contexto.SaveChangesAsync();
+                return sw = true;
+            }
+            else { return sw; }
         }
 
         public async Task<Persona> ObtenerPersonaById(int id)

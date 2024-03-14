@@ -9,26 +9,26 @@ using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
 {
-    public class PersonaFunction
+    public class DireccionFunction
     {
-        private readonly ILogger<PersonaFunction> _logger;
-        private readonly IPersonaLogic personaLogic;
+        private readonly ILogger<DireccionFunction> _logger;
+        private readonly IDireccionLogic direccionLogic;
 
-        public PersonaFunction(ILogger<PersonaFunction> logger, IPersonaLogic personaLogic)
+        public DireccionFunction(ILogger<DireccionFunction> logger, IDireccionLogic direccionLogic)
         {
             _logger = logger;
-            this.personaLogic = personaLogic;
+            this.direccionLogic = direccionLogic;
         }
 
-        [Function("ListarPersonas")]
-        public async Task<HttpResponseData> ListarPersonas([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarpersonas")] HttpRequestData req)
+        [Function("ListarDireccion")]
+        public async Task<HttpResponseData> ListarDireccion([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listardireccion")] HttpRequestData req)
         {
-            _logger.LogInformation("Ejecutando Azure Function para insertar personas");
+            _logger.LogInformation("Ejecutando Azure Function para insertar direccion");
             try
             {
-                var listaPersonas = personaLogic.ListarPersonaTodos();
+                var listaDireccion = direccionLogic.ListarDireccionTodos();
                 var respuesta = req.CreateResponse(HttpStatusCode.OK);
-                await respuesta.WriteAsJsonAsync(listaPersonas.Result);
+                await respuesta.WriteAsJsonAsync(listaDireccion.Result);
                 return respuesta;
             }
             catch (Exception e)
@@ -37,23 +37,23 @@ namespace Coling.API.Afiliados.Endpoints
                 await error.WriteAsJsonAsync(e.Message);
                 return error;
             }
-            
+
         }
-        [Function("InsertarPersona")]
-        public async Task<HttpResponseData> InsertarPersona([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarpersona")] HttpRequestData req)
+        [Function("InsertarDireccion")]
+        public async Task<HttpResponseData> InsertarDireccion([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertardireccion")] HttpRequestData req)
         {
-            _logger.LogInformation("Ejecutando Azure Function para insertar personas");
+            _logger.LogInformation("Ejecutando Azure Function para insertar direccion");
             try
             {
-                var per = await req.ReadFromJsonAsync<Persona>() ?? throw new Exception("Debe ingresar una persona con todos sus datos");
-                bool seGuardo = await personaLogic.InsertarPersona(per);
+                var dir = await req.ReadFromJsonAsync<Direccion>() ?? throw new Exception("Debe ingresar una direccion");
+                bool seGuardo = await direccionLogic.InsertarDireccion(dir);
                 if (seGuardo)
                 {
                     var respuesta = req.CreateResponse(HttpStatusCode.OK);
                     return respuesta;
                 }
                 return req.CreateResponse(HttpStatusCode.BadRequest);
-                
+
             }
             catch (Exception e)
             {
@@ -63,18 +63,18 @@ namespace Coling.API.Afiliados.Endpoints
             }
 
         }
-        [Function("ModificarPersona")]
-        public async Task<HttpResponseData> ModificarPersona([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificarpersona/{id}")] HttpRequestData req, int id, FunctionContext context)
+        [Function("ModificarDireccion")]
+        public async Task<HttpResponseData> ModificarDireccion([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificardireccion/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
-            _logger.LogInformation("Ejecutando Azure Function para modificar personas");
+            _logger.LogInformation("Ejecutando Azure Function para modificar direccion");
             try
             {
-                var persona = await req.ReadFromJsonAsync<Persona>();
-                if (persona == null)
+                var direccion = await req.ReadFromJsonAsync<Direccion>();
+                if (direccion == null)
                 {
-                    throw new Exception("Debe ingresar una persona con todos sus datos a modificar");
+                    throw new Exception("Debe ingresar una direccion con todos sus datos a modificar");
                 }
-                bool seModifico = await personaLogic.ModificarPersona(persona, id);
+                bool seModifico = await direccionLogic.ModificarDireccion(direccion, id);
 
                 if (seModifico)
                 {
@@ -84,7 +84,7 @@ namespace Coling.API.Afiliados.Endpoints
                 else
                 {
                     var respuesta = req.CreateResponse(HttpStatusCode.BadRequest);
-                    await respuesta.WriteAsJsonAsync("La persona no fue encontrada para modificar");
+                    await respuesta.WriteAsJsonAsync("La direccion no fue encontrada para modificar");
                     return respuesta;
                 }
             }
@@ -95,14 +95,14 @@ namespace Coling.API.Afiliados.Endpoints
                 return error;
             }
         }
-        [Function("EliminarPersona")]
-        public async Task<HttpResponseData> EliminarPersona([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminarpersona/{id}")] HttpRequestData req, int id, FunctionContext context)
+        [Function("EliminarDireccion")]
+        public async Task<HttpResponseData> EliminarDireccion([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminardireccion/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
-            _logger.LogInformation("Ejecutando Azure Function para eliminar personas");
+            _logger.LogInformation("Ejecutando Azure Function para eliminar direccion");
 
             try
             {
-                bool seElimino = await personaLogic.EliminarPersona(id);
+                bool seElimino = await direccionLogic.EliminarDireccion(id);
                 if (seElimino)
                 {
                     var respuesta = req.CreateResponse(HttpStatusCode.OK);
@@ -111,7 +111,7 @@ namespace Coling.API.Afiliados.Endpoints
                 else
                 {
                     var respuesta = req.CreateResponse(HttpStatusCode.BadRequest);
-                    await respuesta.WriteAsJsonAsync("La persona no fue encontrada para eliminar");
+                    await respuesta.WriteAsJsonAsync("La direccion no fue encontrada para eliminar");
                     return respuesta;
                 }
             }
@@ -122,24 +122,24 @@ namespace Coling.API.Afiliados.Endpoints
                 return error;
             }
         }
-        [Function("ObtenerPersonaId")]
-        public async Task<HttpResponseData> ObtenerPersonaId([HttpTrigger(AuthorizationLevel.Function, "get/{id}", Route = "obtenerpersona/{id}")] HttpRequestData req, int id, FunctionContext context)
+        [Function("ObtenerDireccionId")]
+        public async Task<HttpResponseData> ObtenerDireccionId([HttpTrigger(AuthorizationLevel.Function, "get/{id}", Route = "obtenerdireccion/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
-            _logger.LogInformation("Ejecutando Azure Function para obtener persona por ID");
+            _logger.LogInformation("Ejecutando Azure Function para obtener direccion por ID");
 
             try
             {
-                var persona = await personaLogic.ObtenerPersonaById(id);
-                if (persona != null)
+                var direccion = await direccionLogic.ObtenerDireccionById(id);
+                if (direccion != null)
                 {
                     var respuesta = req.CreateResponse(HttpStatusCode.OK);
-                    await respuesta.WriteAsJsonAsync(persona);
+                    await respuesta.WriteAsJsonAsync(direccion);
                     return respuesta;
                 }
                 else
                 {
                     var respuesta = req.CreateResponse(HttpStatusCode.NotFound);
-                    await respuesta.WriteAsJsonAsync("La persona no fue encontrada");
+                    await respuesta.WriteAsJsonAsync("La direccion no fue encontrada");
                     return respuesta;
                 }
             }
