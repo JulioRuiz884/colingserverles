@@ -10,6 +10,7 @@ namespace Coling.Repositorio.Contratos
     {
         public Task<bool> VerificarCredenciales(string usuariox, string passwordx);
         public Task<string> EncriptarPassword(string password);
-        //public Task<string> DesencriptarPassword(string password);
+        public Task<bool> ValidarToken(string token);
+        public Task<ITokenData> ConstruirToken(string usuarioname, string password);
     }
 }
