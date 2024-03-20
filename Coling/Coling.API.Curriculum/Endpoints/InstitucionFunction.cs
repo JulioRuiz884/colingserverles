@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
@@ -136,6 +137,9 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarInstitucion")]
+        [OpenApiOperation("Listarespec", "ListarInstitucion", Description = "Sirve para listar todas las instituciones")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+                                 bodyType: typeof(List<Institucion>), Description = "Mostrara una lista de Instituciones")]
         public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -144,6 +148,30 @@ namespace Coling.API.Curriculum.Endpoints
                 var lista = repositorio.ObtenerTodo();
                 respuesta = req.CreateResponse(HttpStatusCode.OK);
                 await respuesta.WriteAsJsonAsync(lista.Result);
+                return respuesta;
+
+            }
+            catch (Exception)
+            {
+                respuesta = req.CreateResponse(HttpStatusCode.InternalServerError);
+                return respuesta;
+            }
+        }
+        [Function("ListarNombres")]
+        [OpenApiOperation("Listarespec", "ListarNombres", Description = "Sirve para listar todas los Nombres")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
+                                 bodyType: typeof(List<Institucion>), Description = "Mostrara una lista de Nombres")]
+        public async Task<HttpResponseData> ListarNombres([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        {
+            HttpResponseData respuesta;
+            try
+            {
+                List<string> lista = new List<string>();
+                lista.Add("UPDS");
+                lista.Add("SARACHO");
+                lista.Add("UNO");
+                respuesta = req.CreateResponse(HttpStatusCode.OK);
+                await respuesta.WriteAsJsonAsync(lista);
                 return respuesta;
 
             }
