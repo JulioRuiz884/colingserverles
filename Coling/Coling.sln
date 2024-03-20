@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Multiplataforma", "Multipla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coling.Shared", "Coling.Shared\Coling.Shared.csproj", "{D4C9A432-29AB-444D-9876-8280D5672573}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coling.Utilitarios", "Coling.Utilitarios\Coling.Utilitarios.csproj", "{455825A3-950E-475E-8B95-C58471CFC0B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coling.Repositorio", "Coling.Repositorio\Coling.Repositorio.csproj", "{EC8DDE53-C0CE-4373-914E-8444060A10A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{D4C9A432-29AB-444D-9876-8280D5672573}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4C9A432-29AB-444D-9876-8280D5672573}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4C9A432-29AB-444D-9876-8280D5672573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{455825A3-950E-475E-8B95-C58471CFC0B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{455825A3-950E-475E-8B95-C58471CFC0B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{455825A3-950E-475E-8B95-C58471CFC0B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{455825A3-950E-475E-8B95-C58471CFC0B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC8DDE53-C0CE-4373-914E-8444060A10A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC8DDE53-C0CE-4373-914E-8444060A10A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC8DDE53-C0CE-4373-914E-8444060A10A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC8DDE53-C0CE-4373-914E-8444060A10A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +60,8 @@ Global
 		{72E27D71-D81D-4B98-B356-DB7DB2BBF67C} = {EEC6F117-A04B-4B55-9800-D3069D96E71C}
 		{65A2E3B3-59D7-45A4-8975-821A90BC4E7C} = {EEC6F117-A04B-4B55-9800-D3069D96E71C}
 		{D4C9A432-29AB-444D-9876-8280D5672573} = {E16CA388-56B6-4AEC-82C7-A063B0D4B76B}
+		{455825A3-950E-475E-8B95-C58471CFC0B4} = {E16CA388-56B6-4AEC-82C7-A063B0D4B76B}
+		{EC8DDE53-C0CE-4373-914E-8444060A10A0} = {E16CA388-56B6-4AEC-82C7-A063B0D4B76B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47E2F5E9-4C2D-4C6B-ADE3-CAA1C9133CD4}

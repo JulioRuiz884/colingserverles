@@ -21,7 +21,7 @@ namespace Coling.API.Curriculum.Implementacion.Repositorios
         {
             configuration = conf;
             cadenaConexion = configuration.GetSection("cadenaConexion").Value;
-            tableName = "EstudioRepositorio";
+            tableName = "Estudios";
         }
 
         public async Task<bool> Eliminar(string partitiokey, string rowkey, string etag)
