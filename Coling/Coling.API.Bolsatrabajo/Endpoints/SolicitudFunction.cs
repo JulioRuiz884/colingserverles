@@ -1,20 +1,21 @@
+using Coling.API.Bolsatrabajo.Conexion;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace Coling.API.Bolsatrabajo
+namespace Coling.API.Bolsatrabajo.Endpoints
 {
-    public class Function1
+    public class SolicitudFunction
     {
-        private readonly ILogger<Function1> _logger;
+        private readonly ILogger<SolicitudFunction> _logger;
 
-        public Function1(ILogger<Function1> logger)
+        public SolicitudFunction(ILogger<SolicitudFunction> logger)
         {
             _logger = logger;
         }
 
-        [Function("Function1")]
+        [Function("SolicitudFunction")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequest req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");

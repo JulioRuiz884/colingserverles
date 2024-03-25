@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -20,7 +21,7 @@ namespace Coling.Repositorio.Implementacion
         {
             this.configuration = configuration;
         }
-        public async Task<ITokenData> ConstruirToken(string usuarioname, string password)
+        public async Task<TokenData> ConstruirToken(string usuarioname, string password)
         {
             var claims = new List<Claim>()
             {
@@ -30,7 +31,15 @@ namespace Coling.Repositorio.Implementacion
             };
 
             var SecretKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["LlaveSecreta"] ?? ""));
+            var creds = new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256);
+            var expires = DateTime.UtcNow.AddMinutes(5);
+
+            var tokenSeguridad = new JwtSecurityToken(issuer: null, audience: null, claims: claims, expires: expires, signingCredentials: creds);
+
             TokenData respuestaToken = new TokenData();
+            respuestaToken.Token = new JwtSecurityTokenHandler().WriteToken(tokenSeguridad);
+            respuestaToken.Expira = expires;
+
             return respuestaToken;
         }
 
@@ -50,17 +59,17 @@ namespace Coling.Repositorio.Implementacion
             throw new NotImplementedException();
         }
 
-        public async Task<bool> VerificarCredenciales(string usuariox, string passwordx)
+        public async Task<TokenData> VerficarCredenciales(string usuariox, string passwordx)
         {
-            bool sw = false;
+            TokenData tokenDevolver = new TokenData();
             string passEncriptado = await EncriptarPassword(passwordx);
             string consulta = "select count(idusuario) from usuario where nombreuser='" + usuariox + "' and password='" + passEncriptado + "'";
             int Existe = Conexion.EjecutarEscalar(consulta);
             if (Existe > 0)
             {
-                sw = true;
+                tokenDevolver = await ConstruirToken(usuariox, passwordx);
             }
-            return sw;
+            return tokenDevolver;
         }
     }
 }
