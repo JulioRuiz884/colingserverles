@@ -19,10 +19,12 @@ var host = new HostBuilder()
         services.AddScoped<IProfesionRepositorio, ProfesionRepositorio>();
         services.AddScoped<ITipoEstudioRepositorio, TipoEstudioRepositorio>();
         services.AddSingleton<JwtMiddleware>();
+        services.AddSingleton<AutorizacionRolMiddleware>();
     })
     .ConfigureFunctionsWebApplication(x =>
     {
         x.UseMiddleware<JwtMiddleware>();
+        x.UseMiddleware<AutorizacionRolMiddleware>();
     })
     .Build();
 

@@ -1,5 +1,7 @@
 using Coling.API.Curriculum.Contratos.Repositorios;
 using Coling.API.Curriculum.Modelo;
+using Coling.Utilitarios.Attributes;
+using Coling.Utilitarios.Roles;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -51,6 +53,7 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("InsertarInstitucion")]
+        [ColingAuthorize(AplicacionRoles.Admin)]
         [OpenApiOperation("Listarespec", "InsertarInstitucion", Description = "Sirve para insertar una institucion")]
         [OpenApiRequestBody("application/json", typeof(Institucion), Description = "Institucion modelo")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
@@ -141,6 +144,7 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarInstitucion")]
+        [ColingAuthorize(AplicacionRoles.Admin + "," + AplicacionRoles.Afiliado + "," + AplicacionRoles.Secretaria)]
         [OpenApiOperation("Listarespec", "ListarInstitucion", Description = "Sirve para listar todas las instituciones")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
                                  bodyType: typeof(List<Institucion>), Description = "Mostrara una lista de Instituciones")]
@@ -162,6 +166,7 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarNombres")]
+        [ColingAuthorize(AplicacionRoles.Afiliado + "," + AplicacionRoles.Secretaria)]
         [OpenApiOperation("Listarespec", "ListarNombres", Description = "Sirve para listar todas los Nombres")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
                                  bodyType: typeof(List<string>), Description = "Mostrara una lista de Nombres")]

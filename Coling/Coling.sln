@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coling.Repositorio", "Colin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coling.Autentificacion", "Coling.Autentificacion\Coling.Autentificacion.csproj", "{24089CD3-CFDF-451A-BF70-27B8F308B7F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coling.BolsaTrabajo", "Coling.BolsaTrabajo\Coling.BolsaTrabajo.csproj", "{005AF418-46D2-4822-81D1-C867B5AB7A1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coling.BolsaTrabajo", "Coling.BolsaTrabajo\Coling.BolsaTrabajo.csproj", "{005AF418-46D2-4822-81D1-C867B5AB7A1B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

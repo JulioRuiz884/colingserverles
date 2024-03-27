@@ -24,17 +24,19 @@ namespace Coling.Utilitarios.Middlewares
         public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)
         {
             var request = await context.GetHttpRequestDataAsync();
-            if (EsTokenValido(request.Headers))
+            ClaimsPrincipal resultado = EsTokenValido(request.Headers);
+            if (resultado==null)
             {
                 throw new InvalidOperationException("El token es invalido");
             }
+            string? rolesClaim = resultado.Claims.ElementAt(1)?.Value;
+            request.FunctionContext.Items.Add("rolesClaim", rolesClaim);
             await next(context);
         }
 
 
-        private bool EsTokenValido(IEnumerable<KeyValuePair<string, IEnumerable<string>>> cabeceras)
+        private ClaimsPrincipal EsTokenValido(IEnumerable<KeyValuePair<string, IEnumerable<string>>> cabeceras)
         {
-            bool sw= false;
             string? token = null;
             
             var cabeceraAutorizacion = cabeceras.FirstOrDefault(x => x.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase) || 
@@ -60,19 +62,19 @@ namespace Coling.Utilitarios.Middlewares
             try
             {
                 ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(token, validarParametros, out _);
-                return true;
+                return claimsPrincipal;
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
-            return sw;
+            return null;
 
         }
 
         private string ExtraerToken(string? tokenCabecera)
         {
-            //const string prefijoBearer = "Bearer ";
+            const string prefijoBearer = "Bearer ";
             //if (tokenCabecera.StartsWith(prefijoBearer, StringComparison.OrdinalIgnoreCase))
             //{
                 return tokenCabecera.Substring(prefijoBearer.Length);
