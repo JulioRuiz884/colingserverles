@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Curriculum.Endpoints
@@ -21,6 +23,9 @@ namespace Coling.API.Curriculum.Endpoints
         }
 
         [Function("EliminarTipoEstudio")]
+        [OpenApiOperation("Eliminarspec", "EliminarTipoEstudio", Description = "Sirve para eliminar un TipoEstudio por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del TipoEstudio a eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la eliminación fue exitosa")]
         public async Task<HttpResponseData> EliminarTipoEstudio([HttpTrigger(AuthorizationLevel.Function, "delete")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -50,6 +55,9 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("InsertarTipoEstudio")]
+        [OpenApiOperation("Insertarspec", "InsertarTipoEstudio", Description = "Sirve para insertar un TipoEstudio")]
+        [OpenApiRequestBody("application/json", typeof(TipoEstudio), Description = "TipoEstudio modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(TipoEstudio), Description = "Insertara un TipoEstudio.")]
         public async Task<HttpResponseData> InsertarTipoEstudio([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -77,6 +85,10 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ModificarTipoEstudio")]
+        [OpenApiOperation("Modificarspec", "ModificarTipoEstudio", Description = "Sirve para modificar un TipoEstudio")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del TipoEstudio a modificar")]
+        [OpenApiRequestBody("application/json", typeof(TipoEstudio), Description = "TipoEstudio modelo con los campos actualizados")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la modificación fue exitosa")]
         public async Task<HttpResponseData> ModificarTipoEstudio([HttpTrigger(AuthorizationLevel.Function, "put")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -110,6 +122,10 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarTipoEstudioById")]
+        [OpenApiOperation("ObtenerByIdspec", "ListarTipoEstudioById", Description = "Sirve para obtener un TipoEstudio por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del TipoEstudio a obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(TipoEstudio), Description = "Devuelve el TipoEstudio encontrada")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(string), Description = "No se encontró ningun TipoEstudio con el ID proporcionado")]
         public async Task<HttpResponseData> ListarTipoEstudioById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "ListarTipoEstudioById/{id}")] HttpRequestData req, string id)
         {
             HttpResponseData respuesta;
@@ -136,6 +152,8 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarTipoEstudio")]
+        [OpenApiOperation("Listarespec", "ListarTipoEstudio", Description = "Sirve para listar todas los TipoEstudio")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<TipoEstudio>), Description = "Devuelve la lista de TipoEstudio")]
         public async Task<HttpResponseData> ListarTipoEstudio([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;

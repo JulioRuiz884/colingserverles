@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Curriculum.Endpoints
@@ -22,6 +24,9 @@ namespace Coling.API.Curriculum.Endpoints
         }
 
         [Function("EliminarEstudio")]
+        [OpenApiOperation("Eliminarspec", "EliminarEstudio", Description = "Sirve para eliminar un Estudio por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del Estudio a eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la eliminación fue exitosa")]
         public async Task<HttpResponseData> EliminarEstudio([HttpTrigger(AuthorizationLevel.Function, "delete")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -51,6 +56,9 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("InsertarEstudio")]
+        [OpenApiOperation("Insertarspec", "InsertarEstudio", Description = "Sirve para insertar un Estudio")]
+        [OpenApiRequestBody("application/json", typeof(Estudios), Description = "Estudio modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Estudios), Description = "Insertara un Estudio.")]
         public async Task<HttpResponseData> InsertarEstudio([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -78,6 +86,10 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ModificarEstudio")]
+        [OpenApiOperation("Modificarspec", "ModificarEstudio", Description = "Sirve para modificar un Estudio")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del Estudio a modificar")]
+        [OpenApiRequestBody("application/json", typeof(Estudios), Description = "Estudio modelo con los campos actualizados")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la modificación fue exitosa")]
         public async Task<HttpResponseData> ModificarEstudio([HttpTrigger(AuthorizationLevel.Function, "put")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -111,6 +123,10 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarEstudioById")]
+        [OpenApiOperation("ObtenerByIdspec", "ListarEstudioById", Description = "Sirve para obtener un Estudio por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del Estudio a obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Estudios), Description = "Devuelve el Estudio encontrada")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(string), Description = "No se encontró ningun Estudio con el ID proporcionado")]
         public async Task<HttpResponseData> ListarEstudioById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "ListarEstudioById/{id}")] HttpRequestData req, string id)
         {
             HttpResponseData respuesta;
@@ -137,6 +153,8 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarEstudio")]
+        [OpenApiOperation("Listarespec", "ListarEstudio", Description = "Sirve para listar todas los Estudios")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Estudios>), Description = "Devuelve la lista de Estudios")]
         public async Task<HttpResponseData> ListarEstudio([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;

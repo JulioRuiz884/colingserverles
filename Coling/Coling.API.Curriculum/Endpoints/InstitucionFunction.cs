@@ -8,6 +8,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Curriculum.Endpoints
@@ -24,6 +25,9 @@ namespace Coling.API.Curriculum.Endpoints
         }
 
         [Function("EliminarInstitucion")]
+        [OpenApiOperation("Eliminarspec", "EliminarInstitucion", Description = "Sirve para eliminar una Institucion por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la Institucion a eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la eliminación fue exitosa")]
         public async Task<HttpResponseData> EliminarInstitucion([HttpTrigger(AuthorizationLevel.Function, "delete")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -85,6 +89,10 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ModificarInstitucion")]
+        [OpenApiOperation("Modificarspec", "ModificarInstitucion", Description = "Sirve para modificar una Institucion")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la Institucion a modificar")]
+        [OpenApiRequestBody("application/json", typeof(Institucion), Description = "Institucion modelo con los campos actualizados")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la modificación fue exitosa")]
         public async Task<HttpResponseData> ModificarInstitucion([HttpTrigger(AuthorizationLevel.Function, "put")] HttpRequestData req)
         {
             HttpResponseData respuesta;
@@ -118,6 +126,10 @@ namespace Coling.API.Curriculum.Endpoints
             }
         }
         [Function("ListarInstitucionById")]
+        [OpenApiOperation("ObtenerByIdspec", "ListarInstitucionById", Description = "Sirve para obtener una Institucion por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la Institucion a obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Institucion), Description = "Devuelve la Institucion encontrada")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(string), Description = "No se encontró ninguna Institucion con el ID proporcionado")]
         public async Task<HttpResponseData> ListarInstitucionById([HttpTrigger(AuthorizationLevel.Function, "get", Route = "ListarInstitucionById/{id}")] HttpRequestData req, string id)
         {
             HttpResponseData respuesta;
