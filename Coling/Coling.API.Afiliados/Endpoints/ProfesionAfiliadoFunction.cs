@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,6 +23,8 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarProfesionAfiliado")]
+        [OpenApiOperation("ListarSolicitudespec", "ListarProfesionAfiliado", Description = "Sirve para listar todas las ProfesionAfiliado")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Direccion>), Description = "Devuelve la lista de ProfesionAfiliado")]
         public async Task<HttpResponseData> ListarProfesionAfiliadoLogic([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarProfesionAfiliado")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para insertar ProfesionAfiliado");
@@ -40,6 +44,9 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("InsertarProfesionAfiliado")]
+        [OpenApiOperation("Insertarspec", "InsertarProfesionAfiliado", Description = "Sirve para insertar una ProfesionAfiliado")]
+        [OpenApiRequestBody("application/json", typeof(ProfesionAfiliado), Description = "ProfesionAfiliado modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ProfesionAfiliado), Description = "Insertara una ProfesionAfiliado.")]
         public async Task<HttpResponseData> InsertarProfesionAfiliadoLogic([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarProfesionAfiliado")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para insertar ProfesionAfiliado");
@@ -64,6 +71,10 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("ModificarProfesionAfiliado")]
+        [OpenApiOperation("Modificarspec", "ModificarProfesionAfiliado", Description = "Sirve para modificar una ProfesionAfiliado")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la ProfesionAfiliado a modificar")]
+        [OpenApiRequestBody("application/json", typeof(ProfesionAfiliado), Description = "ProfesionAfiliado modelo con los campos actualizados")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la modificación fue exitosa")]
         public async Task<HttpResponseData> ModificarAfiliadoIdioma([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificarProfesionAfiliado/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
             _logger.LogInformation("Ejecutando Azure Function para modificar ProfesionAfiliado");
@@ -96,6 +107,9 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("EliminarProfesionAfiliado")]
+        [OpenApiOperation("Eliminarspec", "EliminarProfesionAfiliado", Description = "Sirve para eliminar una ProfesionAfiliado por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la ProfesionAfiliado a eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la eliminación fue exitosa")]
         public async Task<HttpResponseData> EliminarAfiliadoIdioma([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminarProfesionAfiliado/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
             _logger.LogInformation("Ejecutando Azure Function para eliminar ProfesionAfiliado");
@@ -123,6 +137,10 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("ObtenerProfesionAfiliadoId")]
+        [OpenApiOperation("ObtenerByIdspec", "ObtenerProfesionAfiliadoId", Description = "Sirve para obtener una ProfesionAfiliado por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la ProfesionAfiliado a obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ProfesionAfiliado), Description = "Devuelve la ProfesionAfiliado encontrada")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(string), Description = "No se encontró ninguna ProfesionAfiliado con el ID proporcionado")]
         public async Task<HttpResponseData> ObtenerProfesionAfiliadoId([HttpTrigger(AuthorizationLevel.Function, "get/{id}", Route = "obtenerProfesionAfiliado/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
             _logger.LogInformation("Ejecutando Azure Function para obtener ProfesionAfiliado por ID");

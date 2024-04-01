@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System.Net;
 
 namespace Coling.API.Afiliados.Endpoints
@@ -21,6 +23,8 @@ namespace Coling.API.Afiliados.Endpoints
         }
 
         [Function("ListarAfiliadoIdioma")]
+        [OpenApiOperation("ListarSolicitudespec", "ListarAfiliadoIdioma", Description = "Sirve para listar todas las afiliado idiomas")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<AfiliadoIdioma>), Description = "Devuelve la lista de afiliados idiomas")]
         public async Task<HttpResponseData> ListarAfiliadoIdioma([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarafiliadoIdioma")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para insertar afiliadoIdioma");
@@ -40,6 +44,9 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("InsertarAfiliadoIdioma")]
+        [OpenApiOperation("Insertarspec", "InsertarAfiliadoIdioma", Description = "Sirve para insertar un AfiliadoIdioma")]
+        [OpenApiRequestBody("application/json", typeof(AfiliadoIdioma), Description = "AfiliadoIdioma modelo")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(AfiliadoIdioma), Description = "Insertara un AfiliadoIdioma.")]
         public async Task<HttpResponseData> InsertarAfiliadoIdioma([HttpTrigger(AuthorizationLevel.Function, "post", Route = "insertarafiliadoIdioma")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para insertar afiliadoIdioma");
@@ -64,6 +71,10 @@ namespace Coling.API.Afiliados.Endpoints
 
         }
         [Function("ModificarAfiliadoIdioma")]
+        [OpenApiOperation("Modificarspec", "ModificarAfiliadoIdioma", Description = "Sirve para modificar un AfiliadoIdioma")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del AfiliadoIdioma a modificar")]
+        [OpenApiRequestBody("application/json", typeof(AfiliadoIdioma), Description = "AfiliadoIdioma modelo con los campos actualizados")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la modificación fue exitosa")]
         public async Task<HttpResponseData> ModificarAfiliadoIdioma([HttpTrigger(AuthorizationLevel.Function, "put", Route = "modificarafiliadoIdioma/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
             _logger.LogInformation("Ejecutando Azure Function para modificar afiliadoIdioma");
@@ -96,6 +107,9 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("EliminarAfiliadoIdioma")]
+        [OpenApiOperation("Eliminarspec", "EliminarAfiliadoIdioma", Description = "Sirve para eliminar un AfiliadoIdioma por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del AfiliadoIdioma a eliminar")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(bool), Description = "Indica si la eliminación fue exitosa")]
         public async Task<HttpResponseData> EliminarAfiliadoIdioma([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "eliminarafiliadoIdioma/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
             _logger.LogInformation("Ejecutando Azure Function para eliminar afiliadoIdioma");
@@ -123,6 +137,10 @@ namespace Coling.API.Afiliados.Endpoints
             }
         }
         [Function("ObtenerAfiliadoIdiomaId")]
+        [OpenApiOperation("ObtenerByIdspec", "ObtenerAfiliadoIdiomaId", Description = "Sirve para obtener un AfiliadoIdioma por su ID")]
+        [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID del AfiliadoIdioma a obtener")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(AfiliadoIdioma), Description = "Devuelve la AfiliadoIdioma encontrada")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(string), Description = "No se encontró ningun AfiliadoIdioma con el ID proporcionado")]
         public async Task<HttpResponseData> ObtenerAfiliadoIdiomaId([HttpTrigger(AuthorizationLevel.Function, "get/{id}", Route = "obtenerafiliadoIdioma/{id}")] HttpRequestData req, int id, FunctionContext context)
         {
             _logger.LogInformation("Ejecutando Azure Function para obtener afiliadoIdioma por ID");
