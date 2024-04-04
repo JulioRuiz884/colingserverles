@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -14,25 +15,24 @@ namespace Coling.Repositorio.Implementacion
 {
     public class UsuarioRepositorio : IUsuarioRepositorio
     {
-
         private readonly IConfiguration configuration;
 
         public UsuarioRepositorio(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
-        public async Task<TokenData> ConstruirToken(string usuarioname, string password)
+        public async Task<TokenData> ConstruirToken(string usuarioname, string password, string rol)
         {
             var claims = new List<Claim>()
             {
                 new Claim("usuario", usuarioname),
-                new Claim("rol", "Admin"),
+                new Claim("rol", rol),
                 new Claim("estado", "Activo")
             };
 
             var SecretKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["LlaveSecreta"] ?? ""));
             var creds = new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.UtcNow.AddMinutes(5);
+            var expires = DateTime.UtcNow.AddMinutes(50);
 
             var tokenSeguridad = new JwtSecurityToken(issuer: null, audience: null, claims: claims, expires: expires, signingCredentials: creds);
 
@@ -63,11 +63,12 @@ namespace Coling.Repositorio.Implementacion
         {
             TokenData tokenDevolver = new TokenData();
             string passEncriptado = await EncriptarPassword(passwordx);
-            string consulta = "select count(idusuario) from usuario where nombreuser='" + usuariox + "' and password='" + passEncriptado + "'";
-            int Existe = Conexion.EjecutarEscalar(consulta);
-            if (Existe > 0)
+            string consulta = "select * from usuario where nombreuser='" + usuariox + "' and password='" + passEncriptado + "'";
+            DataTable Existe = Conexion.EjecutarDataTabla(consulta, "tabla");
+            if (Existe.Rows.Count > 0)
             {
-                tokenDevolver = await ConstruirToken(usuariox, passwordx);
+                string rol = Existe.Rows[0]["rol"].ToString();
+                tokenDevolver = await ConstruirToken(usuariox, passwordx, rol);
             }
             return tokenDevolver;
         }

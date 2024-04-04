@@ -2,8 +2,7 @@
   "profiles": {
     "Coling.Autentificacion": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7051",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7051"
     }
   }
 }
