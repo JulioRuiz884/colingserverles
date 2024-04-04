@@ -25,30 +25,29 @@ namespace Coling.Utilitarios.Middlewares
         {
             var request = await context.GetHttpRequestDataAsync();
             ClaimsPrincipal resultado = EsTokenValido(request.Headers);
-            if (resultado==null)
+            if (resultado == null)
             {
                 throw new InvalidOperationException("El token es invalido");
             }
             string? rolesClaim = resultado.Claims.ElementAt(1)?.Value;
-            request.FunctionContext.Items.Add("rolesClaim", rolesClaim);
+            request.FunctionContext.Items.Add("rolesclaim", rolesClaim);
             await next(context);
         }
-
 
         private ClaimsPrincipal EsTokenValido(IEnumerable<KeyValuePair<string, IEnumerable<string>>> cabeceras)
         {
             string? token = null;
-            
-            var cabeceraAutorizacion = cabeceras.FirstOrDefault(x => x.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase) || 
-                                                                     x.Key.Equals("Bearer", StringComparison.OrdinalIgnoreCase)).Value;
 
+            var cabeceraAutorizacion = cabeceras.FirstOrDefault(h => h.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase) ||
+                                                                h.Key.Equals("Bearer", StringComparison.OrdinalIgnoreCase)).Value;
             token = ExtraerToken(cabeceraAutorizacion.FirstOrDefault());
 
             var LlaveSecreta = configuration["LlaveSecreta"];
             if (string.IsNullOrWhiteSpace(LlaveSecreta))
             {
-                throw new InvalidOperationException("NO esta configurada la LLave Secreta");
+                throw new InvalidOperationException("NO esta configurada la llave secreta");
             }
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var validarParametros = new TokenValidationParameters
             {
@@ -57,7 +56,7 @@ namespace Coling.Utilitarios.Middlewares
                 ValidateIssuer = false,
                 ValidateAudience = false,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
+                ClockSkew = TimeSpan.Zero
             };
             try
             {
@@ -68,18 +67,17 @@ namespace Coling.Utilitarios.Middlewares
             {
                 return null;
             }
-            return null;
-
         }
 
-        private string ExtraerToken(string? tokenCabecera)
+        private string ExtraerToken(string tokenCabecera)
         {
             const string prefijoBearer = "Bearer ";
-            //if (tokenCabecera.StartsWith(prefijoBearer, StringComparison.OrdinalIgnoreCase))
+            //if(tokenCabecera.StartsWith(prefijoBearer, StringComparison.OrdinalIgnoreCase))
             //{
-                return tokenCabecera.Substring(prefijoBearer.Length);
+            return tokenCabecera.Substring(prefijoBearer.Length);
             //}
-            //throw new InvalidOperationException("Operacion Invalida");
+
+            //throw new InvalidOperationException("Operacion invalida");
         }
     }
 }
