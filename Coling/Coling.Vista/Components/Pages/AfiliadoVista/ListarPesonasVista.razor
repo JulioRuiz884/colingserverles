@@ -1,0 +1,33 @@
+﻿@page "/personas"
+@inject IPersonaService servicio
+
+<h3>Listar Personas</h3>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><strong>Nombre Institucion</strong></th>
+                <th><strong>Apellido</strong></th>
+            </tr>
+        </thead>
+        @foreach (var item in personas)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Apellidos</td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@code {
+    public List<Persona> personas { get; set; } = new List<Persona>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var respuesta = await servicio.ListarPersonas();
+        personas = respuesta;
+    }
+}

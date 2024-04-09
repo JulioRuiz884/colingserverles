@@ -152,7 +152,7 @@ namespace Coling.API.Curriculum.Endpoints
         [Function("ListarExperienciaLaboral")]
         [OpenApiOperation("Listarespec", "ListarExperienciaLaboral", Description = "Sirve para listar todas las ExperienciaLaboral")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<ExperienciaLaboral>), Description = "Devuelve la lista de ExperienciaLaboral")]
-        public async Task<HttpResponseData> ListarExperienciaLaboral([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarExperienciaLaboral([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try

@@ -1,5 +1,4 @@
 using Coling.API.Afiliados.Contratos;
-using Coling.API.Afiliados.Implementacion;
 using Coling.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

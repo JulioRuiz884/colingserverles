@@ -2,7 +2,10 @@
   "profiles": {
     "Coling.API.Bolsatrabajo": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7060"
+      "commandLineArgs": "--port 7060",
+      "environmentVariables": {
+        "cadena": "cadena: mongodb+srv://ruizjulio884:u.72949076@clusterbolsatrabajo.t4tmpbm.mongodb.net/?retryWrites=true&w=majority&appName=ClusterBolsaTrabajo"
+      }
     }
   }
 }

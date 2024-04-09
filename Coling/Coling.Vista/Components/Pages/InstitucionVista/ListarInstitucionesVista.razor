@@ -1,0 +1,41 @@
+﻿@page "/instituciones"
+@inject IInstitucionService servicioInstitucion
+
+<h3>Listar Instituciones</h3>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="/institucion/crear" class="btn btn-primary m-1">Agregar Nuevo</a>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><strong>Nombre Institucion</strong></th>
+                <th><strong>Direccion</strong></th>
+                <th><strong>Opciones</strong></th>
+            </tr>
+        </thead>
+        @foreach (var item in instituciones)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Direccion</td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@code {
+    public List<Institucion> instituciones { get; set; } = new List<Institucion>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjYzNzIzNH0.nO4ZauhDrulMTfZqxKssq68ajd1ZdANg42cV3uKjLTQ";
+        var respuesta = await servicioInstitucion.ListarInstituciones(token);
+        instituciones = respuesta;
+    }
+}

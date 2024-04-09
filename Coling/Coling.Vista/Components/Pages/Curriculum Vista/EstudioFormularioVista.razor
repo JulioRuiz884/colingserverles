@@ -1,0 +1,96 @@
+﻿@inject SweetAlertService sweet
+
+<EditForm EditContext="contextoEdicion" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label>Tipo Estudio:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@estudio.TipoEstudio" />
+            <ValidationMessage For="@(() => estudio.TipoEstudio)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>NombreGrado:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@estudio.NombreGrado" />
+            <ValidationMessage For="@(() => estudio.NombreGrado)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>TituloRecibido:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@estudio.TituloRecibido" />
+            <ValidationMessage For="@(() => estudio.TituloRecibido)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre Institucion:</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@estudio.NombreInstitucion" />
+            <ValidationMessage For="@(() => estudio.NombreInstitucion)" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label>Anio:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@estudio.Anio" />
+            <ValidationMessage For="@(() => estudio.Anio)" />
+        </div>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-primary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    private EditContext contextoEdicion = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public Estudio estudio { get; set; } = null;
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback Cancelar { get; set; }
+
+    public bool formularioPostOk { get; set; }
+
+    protected override void OnInitialized()
+    {
+        contextoEdicion = new(estudio);
+    }
+
+    private async Task AntesDeNavegarInternamente(LocationChangingContext contexto)
+    {
+        var formularioModificado = contextoEdicion.IsModified();
+
+        if (!formularioModificado || formularioPostOk)
+        {
+            return;
+        }
+
+        var result = await sweet.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmacion",
+                Text = "Desea abandonar esta pantalla? Perdera los cambios",
+                Icon = SweetAlertIcon.Warning,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = !string.IsNullOrEmpty(result.Value);
+        if (confirm)
+            return;
+
+        contexto.PreventNavigation();
+    }
+}

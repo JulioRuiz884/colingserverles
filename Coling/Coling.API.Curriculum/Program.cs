@@ -20,6 +20,11 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
         services.AddScoped<IInstitucionRepositorio, InstitucionRepositorio>();
+        services.AddScoped<IExperienciaLaboralRepositorio, ExperienciaLaboralRepositorio>();
+        services.AddScoped<IEstudiosRepositorio, EstudioRepositorio>();
+        services.AddScoped<IGradoAcademicoRepositorio, GradoAcademicoRepositorio>();
+        services.AddScoped<IProfesionRepositorio, ProfesionRepositorio>();
+        services.AddScoped<ITipoEstudioRepositorio, TipoEstudioRepositorio>();
         services.AddSingleton<JwtMiddleware>();
         services.AddSingleton<AutorizacionRolMiddleware>();
         services.Configure<KestrelServerOptions>(options =>
