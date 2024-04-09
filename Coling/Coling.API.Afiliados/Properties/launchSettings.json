@@ -2,10 +2,7 @@
   "profiles": {
     "Coling.API.Afiliados": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7169",
-      "environmentVariables": {
-        "cadenaConexion": "Data Source=(local); Initial Catalog=colingbd; Integrated Security=True; TrustServerCertificate=true;"
-      }
+      "commandLineArgs": "--port 7169"
     }
   }
 }
