@@ -135,8 +135,8 @@ namespace Coling.API.Bolsatrabajo.Endpoints
             }
         }
 
-        [Function("ObtenerById")]
-        [OpenApiOperation("ObtenerByIdspec", "ObtenerById", Description = "Sirve para obtener una Solicitud por su ID")]
+        [Function("ObtenerOfertaLaboralById")]
+        [OpenApiOperation("ObtenerByIdspec", "ObtenerOfertaLaboralById", Description = "Sirve para obtener una Solicitud por su ID")]
         [OpenApiParameter("id", In = ParameterLocation.Query, Required = true, Type = typeof(string), Description = "ID de la Solicitud a obtener")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Solicitud), Description = "Devuelve la solicitud encontrada")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(string), Description = "No se encontró ninguna solicitud con el ID proporcionado")]

@@ -24,7 +24,7 @@ namespace Coling.API.Afiliados.Endpoints
 
         [Function("ListarProfesionAfiliado")]
         [OpenApiOperation("ListarSolicitudespec", "ListarProfesionAfiliado", Description = "Sirve para listar todas las ProfesionAfiliado")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Direccion>), Description = "Devuelve la lista de ProfesionAfiliado")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<ProfesionAfiliado>), Description = "Devuelve la lista de ProfesionAfiliado")]
         public async Task<HttpResponseData> ListarProfesionAfiliadoLogic([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarProfesionAfiliado")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para insertar ProfesionAfiliado");

@@ -25,7 +25,7 @@ namespace Coling.API.Afiliados.Endpoints
         [Function("ListarPersonas")]
         [OpenApiOperation("ListarSolicitudespec", "ListarPersonas", Description = "Sirve para listar todas las Personas")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<Persona>), Description = "Devuelve la lista de Personas")]
-        public async Task<HttpResponseData> ListarPersonas([HttpTrigger(AuthorizationLevel.Function, "get", Route = "listarpersonas")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarPersonas([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "listarpersonas")] HttpRequestData req)
         {
             _logger.LogInformation("Ejecutando Azure Function para insertar personas");
             try

@@ -1,0 +1,47 @@
+﻿@page "/experienciaLaboral"
+@inject IExperienciaLaboralsService servicioexperienciaLaboral
+
+<h3>Listar Estudios</h3>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="/experienciaLaboral/crear" class="btn btn-primary m-1">Agregar Nuevo</a>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><strong>CodigoAfiliado</strong></th>
+                <th><strong>Nombre Institucion</strong></th>
+                <th><strong>Cargo Titulo</strong></th>
+                <th><strong>Fecha Inicio</strong></th>
+                <th><strong>Fecha Final</strong></th>
+            </tr>
+        </thead>
+        @foreach (var item in experienciaLaborals)
+        {
+            <tr>
+                <td>@item.CodigoAfiliado</td>
+                <td>@item.NombreInstitucion</td>
+                <td>@item.CargoTitulo</td>
+                <td>@item.FechaInicio</td>
+                <td>@item.FechaFinal</td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@code {
+    public List<ExperienciaLaborales> experienciaLaborals { get; set; } = new List<ExperienciaLaborales>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjYzNzIzNH0.nO4ZauhDrulMTfZqxKssq68ajd1ZdANg42cV3uKjLTQ";
+        var respuesta = await servicioexperienciaLaboral.ListarExperienciaLaboral(token);
+        experienciaLaborals = respuesta;
+    }
+
+}

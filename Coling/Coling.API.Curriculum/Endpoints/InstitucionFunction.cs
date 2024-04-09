@@ -160,7 +160,7 @@ namespace Coling.API.Curriculum.Endpoints
         [OpenApiOperation("Listarespec", "ListarInstitucion", Description = "Sirve para listar todas las instituciones")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json",
                                  bodyType: typeof(List<Institucion>), Description = "Mostrara una lista de Instituciones")]
-        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequestData req)
+        public async Task<HttpResponseData> ListarInstitucion([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequestData req)
         {
             HttpResponseData respuesta;
             try
