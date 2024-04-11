@@ -81,7 +81,7 @@ namespace Coling.API.Curriculum.Implementacion.Repositorios
         {
             List<GradoAcademico> lista = new List<GradoAcademico>();
             var tablaCliente = new TableClient(cadenaConexion, tableName);
-            var filtro = "$PartitionKey eq 'Educacion'";
+            var filtro = $"PartitionKey eq 'Educacion'";
             // Realizar la consulta y esperar el resultado
             await foreach (var gradAc in tablaCliente.QueryAsync<GradoAcademico>(filter: filtro))
             {

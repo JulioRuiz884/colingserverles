@@ -3,42 +3,18 @@
 <EditForm EditContext="contextoEdicion" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Tipo Estudio:</label>
+        <label>Nombre:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@estudio.TipoEstudio" />
-            <ValidationMessage For="@(() => estudio.TipoEstudio)" />
+            <InputText class="form-control" @bind-Value="@tipoSocial.NombreSocial" />
+            <ValidationMessage For="@(() => tipoSocial.NombreSocial)" />
         </div>
     </div>
 
     <div class="mb-3">
-        <label>NombreGrado:</label>
+        <label>Estado:</label>
         <div>
-            <InputText class="form-control" @bind-Value="@estudio.NombreGrado" />
-            <ValidationMessage For="@(() => estudio.NombreGrado)" />
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label>TituloRecibido:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@estudio.TituloRecibido" />
-            <ValidationMessage For="@(() => estudio.TituloRecibido)" />
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label>Nombre Institucion:</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@estudio.NombreInstitucion" />
-            <ValidationMessage For="@(() => estudio.NombreInstitucion)" />
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label>Anio:</label>
-        <div>
-            <InputNumber class="form-control" @bind-Value="@estudio.Anio" />
-            <ValidationMessage For="@(() => estudio.Anio)" />
+            <InputText class="form-control" @bind-Value="@tipoSocial.Estado" />
+            <ValidationMessage For="@(() => tipoSocial.Estado)" />
         </div>
     </div>
 
@@ -51,7 +27,7 @@
 
     [Parameter]
     [EditorRequired]
-    public Estudio estudio { get; set; } = null;
+    public TipoSocial tipoSocial { get; set; } = null;
 
     [Parameter]
     [EditorRequired]
@@ -65,7 +41,7 @@
 
     protected override void OnInitialized()
     {
-        contextoEdicion = new(estudio);
+        contextoEdicion = new(tipoSocial);
     }
 
     private async Task AntesDeNavegarInternamente(LocationChangingContext contexto)

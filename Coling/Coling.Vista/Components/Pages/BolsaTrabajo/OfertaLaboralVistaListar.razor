@@ -1,0 +1,98 @@
+﻿@page "/OfertasVistaListar"
+@inject IOfertaLaboralService servicioOfertas
+@inject NavigationManager nav
+
+@inject SweetAlertService Sweet
+
+<h3>Listar Ofertas Laborales</h3>
+
+<div class="d-flex justify-content-end mb-3">
+    <a href="/OfertaCrear" class="btn btn-primary">Agregar Nuevo</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover" style="width:100%">
+        <thead>
+            <tr>
+                
+                <th>IdInstitucion</th>
+                <th>FechaOferta</th>
+                <th>FechaLimite</th>
+                <th>Descripcion</th>
+                <th>TituloCargo</th>
+                <th>TipoTrabajo</th>
+                <th>Area</th>
+                <th>Caracteristicas</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in OfertasLista)
+            {
+                <tr>
+                   
+                    <td>@item.IdInstitucion</td>
+                    <td>@item.FechaOferta</td>
+                    <td>@item.FechaLimite</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.TituloCargo</td>
+                    <td>@item.TipoTrabajo</td>
+                    <td>@item.Area</td>
+                    <td>@item.Caracteristicas</td>
+                    <td>@item.Estado</td>
+                    <td>
+                        <NavLink type="button" class="btn btn-warning" href="@($"/OfertaCrear?Id={@item.Id}")">
+                            <i class='bx bxs-edit me-2'></i>
+                            Modificar
+                        </NavLink>
+                        <button class="btn btn-danger ms-1" @onclick="(e=>Eliminar(item.Id))">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+              
+                <th>IdInstitucion</th>
+                <th>FechaOferta</th>
+                <th>FechaLimite</th>
+                <th>Descripcion</th>
+                <th>TituloCargo</th>
+                <th>TipoTrabajo</th>
+                <th>Area</th>
+                <th>Caracteristicas</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@code {
+    public List<OfertaLaboral> OfertasLista { get; set; } = new List<OfertaLaboral>();
+    string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiTGF1cmEiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMzEzNDYyMH0.JRKHSxS0i0P8pTSpx0vmeLVSVcmNhBaFe1OaJRYUnRA";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var respuesta = await servicioOfertas.Listarofertas(token);
+        OfertasLista = respuesta;
+    }
+    private async Task Eliminar(string id)
+    {
+        bool eliminado = await servicioOfertas.EliminarOferta(id, token);
+        if (eliminado)
+        {
+            await Sweet.FireAsync("Éxito", "La institución ha sido eliminada correctamente", SweetAlertIcon.Success);
+            // Actualizamos la lista de instituciones después de eliminar
+           // nav.NavigateTo("/OfertasVistaListar", true);
+            OfertasLista = await servicioOfertas.Listarofertas(token);
+        }
+        else
+        {
+            await Sweet.FireAsync("Error", "No se pudo eliminar la institución", SweetAlertIcon.Error);
+        }
+    }
+
+ }
+

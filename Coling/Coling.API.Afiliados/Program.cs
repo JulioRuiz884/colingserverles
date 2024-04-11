@@ -31,6 +31,9 @@ var host = new HostBuilder()
         services.AddScoped<IPersonaTipoSocialLogic, PersonaTipoSocialLogic>();
         services.AddScoped<ITelefonoLogic, TelefonoLogic>();
         services.AddScoped<IProfesionAfiliadoLogic, ProfesionAfiliadoLogic>();
+        services.AddScoped<IIdiomaLogic, IdiomaLogic>();
+        services.AddScoped<ITipoSocialLogic, TipoSocialLogic>();
+        services.AddScoped<IAfiliadoLogic, AfiliadoLogic>();
         services.Configure<KestrelServerOptions>(options =>
         {
             options.AllowSynchronousIO = true;

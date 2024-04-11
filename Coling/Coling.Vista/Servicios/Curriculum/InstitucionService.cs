@@ -49,10 +49,11 @@ namespace Coling.Vista.Servicios.Curriculum
             }
             return sw;
         }
-        public async Task<bool> EliminarInstitucion(int id, string token)
+        public async Task<bool> EliminarInstitucion(string id, string token)
         {
             bool sw = false;
             endPoint = url + "/api/EliminarInstitucion/" + id;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage respuesta = await client.DeleteAsync(endPoint);
             if (respuesta.IsSuccessStatusCode)
             {
@@ -60,11 +61,12 @@ namespace Coling.Vista.Servicios.Curriculum
             }
             return sw;
         }
-        public async Task<bool> ModificarInstitucion(Institucion institucion, int id, string token)
+        public async Task<bool> ModificarInstitucion(Institucion institucion, string id, string token)
         {
             bool sw = false;
             endPoint = url + "/api/ModificarInstitucion/" + id;
             string jsonBody = JsonConvert.SerializeObject(institucion);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             HttpContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             HttpResponseMessage respuesta = await client.PutAsync(endPoint, content);
             if (respuesta.IsSuccessStatusCode)

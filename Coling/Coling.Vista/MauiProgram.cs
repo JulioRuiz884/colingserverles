@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components;
 using Coling.Shared;
 using Coling.Vista.Modelos;
+using Coling.Vista.Servicios.Afiliados.Contratos;
+using Coling.Vista.Servicios.BolsaTrabajo.Contratos;
+using Coling.Vista.Servicios.BolsaTrabajo;
 
 namespace Coling.Vista
 {
@@ -28,7 +31,12 @@ namespace Coling.Vista
             builder.Services.AddScoped<IInstitucionService, InstitucionService>();
             builder.Services.AddScoped<IEstudioService, EstudioService>();
             builder.Services.AddScoped<IExperienciaLaboralsService, ExperienciaLaboralService>();
-            
+            builder.Services.AddScoped<IIdiomaService, IdiomaService>();
+            builder.Services.AddScoped<ITipoSocialService, TipoSocialService>();
+            builder.Services.AddScoped<IAfiliadoService, AfiliadoService>();
+            builder.Services.AddScoped<ITelefonoService, TelefonoService>();
+            builder.Services.AddScoped<IOfertaLaboralService, OfertaLaboralService>();
+
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();

@@ -1,4 +1,5 @@
 ﻿@page "/experienciaLaboral"
+@inject SweetAlertService sweetAlertService
 @inject IExperienciaLaboralsService servicioexperienciaLaboral
 
 <h3>Listar Estudios</h3>
@@ -18,6 +19,7 @@
                 <th><strong>Cargo Titulo</strong></th>
                 <th><strong>Fecha Inicio</strong></th>
                 <th><strong>Fecha Final</strong></th>
+                <th><strong>Opciones</strong></th>
             </tr>
         </thead>
         @foreach (var item in experienciaLaborals)
@@ -28,6 +30,10 @@
                 <td>@item.CargoTitulo</td>
                 <td>@item.FechaInicio</td>
                 <td>@item.FechaFinal</td>
+                <td>
+                    <button class="btn btn-danger ms-1" @onclick="(e=>Eliminar(item.RowKey))">Eliminar</button>
+                    <button class="btn btn-warning ms-1" href="@($"/experienciaLaboral/crear?Id={item.RowKey}")">Modificar</button>
+                </td>
             </tr>
         }
     </table>
@@ -35,13 +41,27 @@
 
 
 @code {
-    public List<ExperienciaLaborales> experienciaLaborals { get; set; } = new List<ExperienciaLaborales>();
+    public List<ExperienciaLaboral> experienciaLaborals { get; set; } = new List<ExperienciaLaboral>();
 
     protected override async Task OnInitializedAsync()
     {
-        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjYzNzIzNH0.nO4ZauhDrulMTfZqxKssq68ajd1ZdANg42cV3uKjLTQ";
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
         var respuesta = await servicioexperienciaLaboral.ListarExperienciaLaboral(token);
         experienciaLaborals = respuesta;
     }
+    private async Task Eliminar(string id)
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
+        bool eliminado = await servicioexperienciaLaboral.EliminarExperienciaLaboral(id, token);
+        if (eliminado)
+        {
+            await sweetAlertService.FireAsync("Exito", "El idioma ha sido eliminado correctamente", SweetAlertIcon.Success);
+            await OnInitializedAsync();
+        }
+        else
+        {
+            await sweetAlertService.FireAsync("Error", "No se puedo eliminar el idioma");
+        }
 
+    }
 }

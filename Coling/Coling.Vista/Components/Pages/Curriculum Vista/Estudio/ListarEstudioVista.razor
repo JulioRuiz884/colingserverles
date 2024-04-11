@@ -1,0 +1,61 @@
+﻿@page "/estudios"
+@inject SweetAlertService sweetAlertService
+@inject IEstudioService servicioEstudio
+
+<h3>Listar Estudios</h3>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="/estudio/crear" class="btn btn-primary m-1">Agregar Nuevo</a>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><strong>Tipo Estudio</strong></th>
+                <th><strong>Nombre Grado</strong></th>
+                <th><strong>Opciones</strong></th>
+            </tr>
+        </thead>
+        @foreach (var item in estudios)
+        {
+            <tr>
+                <td>@item.TipoEstudio</td>
+                <td>@item.NombreGrado</td>
+                <td>
+                    <button class="btn btn-danger ms-1" @onclick="(e=>Eliminar(item.RowKey))">Eliminar</button>
+                    <button class="btn btn-warning ms-1" href="@($"/estudio/crear?Id={item.RowKey}")">Modificar</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@code {
+    public List<Estudio> estudios { get; set; } = new List<Estudio>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
+        var respuesta = await servicioEstudio.ListarEstudio(token);
+        estudios = respuesta;
+    }
+    private async Task Eliminar(string id)
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
+        bool eliminado = await servicioEstudio.EliminarEstudio(id, token);
+        if (eliminado)
+        {
+            await sweetAlertService.FireAsync("Exito", "El idioma ha sido eliminado correctamente", SweetAlertIcon.Success);
+            await OnInitializedAsync();
+        }
+        else
+        {
+            await sweetAlertService.FireAsync("Error", "No se puedo eliminar el idioma");
+        }
+
+    }
+}

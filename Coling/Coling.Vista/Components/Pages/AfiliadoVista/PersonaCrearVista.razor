@@ -1,0 +1,30 @@
+﻿@page "/personas/crear"
+@inject IPersonaService servicioPersona
+@inject SweetAlertService sweetAlertService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+<h3>Crear Institucion</h3>
+
+<PersonasFormularioVista @ref="insForm" persona="persona" OnValidSubmit="Crear" Cancelar="Navegar"></PersonasFormularioVista>
+
+@code {
+    private Persona persona = new();
+    private PersonasFormularioVista? insForm;
+
+    private async Task Crear()
+    {
+        var respuesta = await servicioPersona.InsertarPersonas(persona);
+        if(!respuesta)
+        {
+            await sweetAlertService.FireAsync("Error","No se pudo guardar",SweetAlertIcon.Error);
+            return;
+        }
+        Navegar();
+    }
+
+    private void Navegar()
+    {
+        insForm!.formularioPostOk = true;
+        NavigationManager.NavigateTo("./personas");
+    }
+}

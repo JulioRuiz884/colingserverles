@@ -1,0 +1,124 @@
+﻿@page "/OfertaCrear"
+@inject NavigationManager navigationManager
+@inject IOfertaLaboralService servicio
+@inject SweetAlertService Swal
+
+
+<div class="page-content">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-xl-8">
+				<div class="card shadow">
+					<div class="card-body">
+						<h2 class="card-title text-center mb-4">Formulario de Idioma</h2>
+						<hr>
+						<div class="row">
+							<div class="col-md-12">
+								@if (Id == null)
+								{
+									<OfertaLaboralVistaFormulario @ref="insForm" oferta="oferta" OnValidSubmit="Crear" Cancelar="Navegar" botonTexto="@btnTexto" IdOferta="@Id"></OfertaLaboralVistaFormulario>
+								}
+								else
+								{
+									<OfertaLaboralVistaFormulario @ref="insForm" oferta="oferta" OnValidSubmit="Modificar" Cancelar="Navegar" botonTexto="@btnTexto" IdOferta="@Id"></OfertaLaboralVistaFormulario>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	[SupplyParameterFromQuery(Name = "Id")]
+	public string Id { get; set; }
+	string btnTexto = string.Empty;
+
+
+	OLaboral oferta = new OLaboral();
+	private OfertaLaboralVistaFormulario? insForm;
+	string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiTGF1cmEiLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMzEzNDYyMH0.JRKHSxS0i0P8pTSpx0vmeLVSVcmNhBaFe1OaJRYUnRA";
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		
+			if (Id != null)
+			{
+				oferta = await servicio.ObtenerOfertaById(Id,token);
+				btnTexto = "Actualizar";
+			}
+			else
+			{
+				btnTexto = "Guardar";
+			
+		}
+
+		
+
+	}
+	private async Task Crear()
+	{		
+		oferta.Estado = "Activo";
+		bool sw = await servicio.InsertarOferta(oferta,token);
+		if (sw)
+		{
+			await Swal.FireAsync(new SweetAlertOptions
+				{
+					Title = "Agregar Idioma",
+					Text = "El Idioma fue guardado existosamente!",
+					Icon = SweetAlertIcon.Success,
+				}
+			);
+			Navegar();
+		}
+		else
+		{
+			await Swal.FireAsync(new SweetAlertOptions
+				{
+					Title = "Error Servicio",
+					Text = "Se produjo un error al realizar la transaccion!",
+					Icon = SweetAlertIcon.Error,
+				}
+			);
+		}
+		
+	}
+	private async Task Modificar()
+	{
+		bool sw = await servicio.ModificarOferta(oferta,Id,token);
+		if (sw)
+		{
+			await Swal.FireAsync(new SweetAlertOptions
+				{
+					Title = "Actualizar Idioma",
+					Text = "El Idioma fue actualizado existosamente!",
+					Icon = SweetAlertIcon.Success,
+				}
+			);
+			Navegar();
+		}
+		else
+		{
+			await Swal.FireAsync(new SweetAlertOptions
+				{
+					Title = "Error Servicio",
+					Text = "Se produjo un error al realizar la transaccion!",
+					Icon = SweetAlertIcon.Error,
+				}
+			);
+		}
+	}
+
+	private void Navegar()
+	{
+		insForm!.formularioPostOk = true;
+		navigationManager.NavigateTo("OfertasVistaListar");
+	}
+
+	
+
+}

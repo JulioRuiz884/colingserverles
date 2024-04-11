@@ -80,7 +80,7 @@ namespace Coling.API.Curriculum.Implementacion.Repositorios
         {
             List<ExperienciaLaboral> lista = new List<ExperienciaLaboral>();
             var tablaCliente = new TableClient(cadenaConexion, tableName);
-            var filtro = "$PartitionKey eq 'Educacion'";
+            var filtro = $"PartitionKey eq 'Educacion'";
             // Realizar la consulta y esperar el resultado
             await foreach (var explab in tablaCliente.QueryAsync<ExperienciaLaboral>(filter: filtro))
             {

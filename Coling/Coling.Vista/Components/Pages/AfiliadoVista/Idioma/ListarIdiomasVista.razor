@@ -1,0 +1,60 @@
+﻿@page "/idiomas"
+@inject SweetAlertService sweetAlertService
+@inject IIdiomaService servicioIdioma
+
+<h3>Listar Idiomas</h3>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="/idiomas/crear" class="btn btn-primary m-1">Agregar Nuevo</a>
+    </div>
+</div>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><strong>Nombre Idioma</strong></th>
+                <th><strong>Estado</strong></th>
+                <th><strong>Opciones</strong></th>
+            </tr>
+        </thead>
+        @foreach (var item in idiomas)
+        {
+            <tr>
+                <td>@item.NombreIdioma</td>
+                <td>@item.Estado</td>
+                <td>
+                    <button class="btn btn-danger ms-1" @onclick="(e=>Eliminar(item.Id))">Eliminar</button>
+                    <button class="btn btn-warning ms-1" href="@($"/idiomas/crear?Id={item.Id}")">Modificar</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+@code {
+    public List<Idioma> idiomas { get; set; } = new List<Idioma>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var respuesta = await servicioIdioma.ListarIdioma();
+        idiomas = respuesta;
+    }
+
+    private async Task Eliminar(int id)
+    {
+        bool eliminado = await servicioIdioma.EliminarIdioma(id);
+        if (eliminado)
+        {
+            await sweetAlertService.FireAsync("Exito", "El idioma ha sido eliminado correctamente", SweetAlertIcon.Success);
+            await OnInitializedAsync();
+        }
+        else
+        {
+            await sweetAlertService.FireAsync("Error", "No se puedo eliminar el idioma");
+        }
+
+    }
+}

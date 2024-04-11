@@ -11,7 +11,7 @@ namespace Coling.Vista.Servicios.Curriculum
     {
         Task<List<Estudio>> ListarEstudio(string token);
         Task<bool> InsertarEstudio(Estudio estudio, string token);
-        Task<bool> EliminarEstudio(int id, string token);
-        Task<bool> ModificarEstudio(Estudio estudio, int id, string token);
+        Task<bool> EliminarEstudio(string id, string token);
+        Task<bool> ModificarEstudio(Estudio estudio, string id, string token);
     }
 }

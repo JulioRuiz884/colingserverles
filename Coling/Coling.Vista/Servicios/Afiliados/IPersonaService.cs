@@ -10,5 +10,8 @@ namespace Coling.Vista.Servicios.Afiliados
     public interface IPersonaService
     {
         Task<List<Persona>> ListarPersonas();
+        Task<bool> InsertarPersonas(Persona persona);
+        Task<bool> EliminarPersonas(int id);
+        Task<bool> ModificarPersonas(Persona persona, int id);
     }
 }

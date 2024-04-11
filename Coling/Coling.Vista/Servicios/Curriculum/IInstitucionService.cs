@@ -11,7 +11,7 @@ namespace Coling.Vista.Servicios.Curriculum
     {
         Task<List<Institucion>> ListarInstituciones(string token);
         Task<bool> InsertarInstitucion(Institucion institucion, string token);
-        Task<bool> EliminarInstitucion(int id, string token);
-        Task<bool> ModificarInstitucion(Institucion institucion, int id, string token);
+        Task<bool> EliminarInstitucion(string id, string token);
+        Task<bool> ModificarInstitucion(Institucion institucion, string id, string token);
     }
 }

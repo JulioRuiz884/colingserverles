@@ -9,9 +9,9 @@ namespace Coling.Vista.Servicios.Curriculum
 {
     public interface IExperienciaLaboralsService
     {
-        Task<List<ExperienciaLaborales>> ListarExperienciaLaboral(string token);
-        Task<bool> InsertarExperienciaLaboral(ExperienciaLaborales experienciaLaboral, string token);
-        Task<bool> EliminarExperienciaLaboral(int id, string token);
-        Task<bool> ModificarExperienciaLaboral(ExperienciaLaborales experienciaLaboral, int id, string token);
+        Task<List<ExperienciaLaboral>> ListarExperienciaLaboral(string token);
+        Task<bool> InsertarExperienciaLaboral(ExperienciaLaboral experienciaLaboral, string token);
+        Task<bool> EliminarExperienciaLaboral(string id, string token);
+        Task<bool> ModificarExperienciaLaboral(ExperienciaLaboral experienciaLaboral, string id, string token);
     }
 }
