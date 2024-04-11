@@ -1,4 +1,5 @@
 ﻿@page "/instituciones"
+@inject SweetAlertService sweetAlertService
 @inject IInstitucionService servicioInstitucion
 
 <h3>Listar Instituciones</h3>
@@ -23,6 +24,10 @@
             <tr>
                 <td>@item.Nombre</td>
                 <td>@item.Direccion</td>
+                <td>
+                    <button class="btn btn-danger ms-1" @onclick="(e=>Eliminar(item.RowKey))">Eliminar</button>
+                    <button class="btn btn-warning ms-1" href="@($"/institucion/crear?Id={item.RowKey}")">Modificar</button>
+                </td>
             </tr>
         }
     </table>
@@ -34,8 +39,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjYzNzIzNH0.nO4ZauhDrulMTfZqxKssq68ajd1ZdANg42cV3uKjLTQ";
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
         var respuesta = await servicioInstitucion.ListarInstituciones(token);
         instituciones = respuesta;
+    }
+    private async Task Eliminar(string id)
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
+        bool eliminado = await servicioInstitucion.EliminarInstitucion(id, token);
+        if (eliminado)
+        {
+            await sweetAlertService.FireAsync("Exito", "El idioma ha sido eliminado correctamente", SweetAlertIcon.Success);
+            await OnInitializedAsync();
+        }
+        else
+        {
+            await sweetAlertService.FireAsync("Error", "No se puedo eliminar el idioma");
+        }
+
     }
 }

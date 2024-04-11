@@ -1,0 +1,32 @@
+﻿@page "/experienciaLaboral/crear"
+@inject IExperienciaLaboralsService servicioexperienciaLaboral
+@inject SweetAlertService sweetAlertService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+<h3>Crear Experiencia Laboral</h3>
+
+<ExperienciaLaboralFormularioVista @ref="insForm" experienciaLaboral="experienciaLaboral" OnValidSubmit="Crear" Cancelar="Navegar"></ExperienciaLaboralFormularioVista>
+
+@code {
+    private ExperienciaLaboral experienciaLaboral = new();
+    private ExperienciaLaboralFormularioVista? insForm;
+
+    private async Task Crear()
+    {
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
+        experienciaLaboral.PartitionKey = "Educacion";
+        var respuesta = await servicioexperienciaLaboral.InsertarExperienciaLaboral(experienciaLaboral, token);
+        if (!respuesta)
+        {
+            await sweetAlertService.FireAsync("Error", "No se pudo guardar", SweetAlertIcon.Error);
+            return;
+        }
+        Navegar();
+    }
+
+    private void Navegar()
+    {
+        insForm!.formularioPostOk = true;
+        NavigationManager.NavigateTo("./experienciaLaboral");
+    }
+}

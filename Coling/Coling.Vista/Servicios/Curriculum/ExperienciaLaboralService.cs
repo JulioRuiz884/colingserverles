@@ -20,10 +20,11 @@ namespace Coling.Vista.Servicios.Curriculum
             client.BaseAddress = new Uri(url);
         }
 
-        public async Task<bool> EliminarExperienciaLaboral(int id, string token)
+        public async Task<bool> EliminarExperienciaLaboral(string id, string token)
         {
             bool sw = false;
             endPoint = url + "/api/EliminarExperienciaLaboral/" + id;
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             HttpResponseMessage respuesta = await client.DeleteAsync(endPoint);
             if (respuesta.IsSuccessStatusCode)
             {
@@ -32,7 +33,7 @@ namespace Coling.Vista.Servicios.Curriculum
             return sw;
         }
 
-        public async Task<bool> InsertarExperienciaLaboral(ExperienciaLaborales experienciaLaboral, string token)
+        public async Task<bool> InsertarExperienciaLaboral(ExperienciaLaboral experienciaLaboral, string token)
         {
             bool sw = false;
             endPoint = url + "/api/InsertarExperienciaLaboral";
@@ -47,7 +48,7 @@ namespace Coling.Vista.Servicios.Curriculum
             return sw;
         }
 
-        public async Task<List<ExperienciaLaborales>> ListarExperienciaLaboral(string token)
+        public async Task<List<ExperienciaLaboral>> ListarExperienciaLaboral(string token)
         {
             endPoint = "api/ListarExperienciaLaboral";
             client.BaseAddress = new Uri(url);
@@ -55,20 +56,21 @@ namespace Coling.Vista.Servicios.Curriculum
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             HttpResponseMessage response = await client.GetAsync(endPoint);
-            List<ExperienciaLaborales> result = new List<ExperienciaLaborales>();
+            List<ExperienciaLaboral> result = new List<ExperienciaLaboral>();
             if (response.IsSuccessStatusCode)
             {
                 string respuestaCuerpo = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<List<ExperienciaLaborales>>(respuestaCuerpo);
+                result = JsonConvert.DeserializeObject<List<ExperienciaLaboral>>(respuestaCuerpo);
             }
             return result;
         }
 
-        public async Task<bool> ModificarExperienciaLaboral(ExperienciaLaborales experienciaLaboral, int id, string token)
+        public async Task<bool> ModificarExperienciaLaboral(ExperienciaLaboral experienciaLaboral, string id, string token)
         {
             bool sw = false;
             endPoint = url + "/api/ModificarExperienciaLaboral/" + id;
             string jsonBody = JsonConvert.SerializeObject(experienciaLaboral);
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
             HttpContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             HttpResponseMessage respuesta = await client.PutAsync(endPoint, content);
             if (respuesta.IsSuccessStatusCode)
@@ -76,11 +78,6 @@ namespace Coling.Vista.Servicios.Curriculum
                 sw = true;
             }
             return sw;
-        }
-
-        Task<List<ExperienciaLaborales>> IExperienciaLaboralsService.ListarExperienciaLaboral(string token)
-        {
-            throw new NotImplementedException();
         }
     }
 }

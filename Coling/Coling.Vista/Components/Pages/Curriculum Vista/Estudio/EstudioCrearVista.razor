@@ -3,9 +3,9 @@
 @inject SweetAlertService sweetAlertService
 @inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
 
-<h3>Crear Institucion</h3>
+<h3>Crear Estudio</h3>
 
-<EstudioFormularioVista @ref="insForm" institucion="institucion" OnValidSubmit="Crear" Cancelar="Navegar"></EstudioFormularioVista>
+<EstudioFormularioVista @ref="insForm" estudio="estudio" OnValidSubmit="Crear" Cancelar="Navegar"></EstudioFormularioVista>
 
 @code {
     private Estudio estudio = new();
@@ -13,8 +13,8 @@
 
     private async Task Crear()
     {
-        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjYzNzIzNH0.nO4ZauhDrulMTfZqxKssq68ajd1ZdANg42cV3uKjLTQ";
-        estudio.PartitionKey = "Estudio";
+        string token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoianVsaW8iLCJyb2wiOiJBZG1pbiIsImVzdGFkbyI6IkFjdGl2byIsImV4cCI6MTcxMjg1MzM2Nn0.9cbGtdpxQ9iOv2eOVA5I3ojb-jT3RPfp7wv4wZOXo2w";
+        estudio.PartitionKey = "Educacion";
         var respuesta = await servicioEstudio.InsertarEstudio(estudio, token);
         if(!respuesta)
         {

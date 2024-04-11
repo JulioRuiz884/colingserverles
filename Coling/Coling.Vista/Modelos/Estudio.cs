@@ -1,12 +1,13 @@
-﻿using Azure.Data.Tables;
-using Azure;
-using Coling.Shared;
+﻿using Coling.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Data.Tables;
+using Azure;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Coling.Vista.Modelos
 {

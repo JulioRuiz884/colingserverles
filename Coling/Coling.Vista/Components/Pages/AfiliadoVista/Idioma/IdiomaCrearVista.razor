@@ -1,0 +1,46 @@
+﻿@page "/idiomas/crear"
+@inject IIdiomaService servicioIdioma
+@inject SweetAlertService sweetAlertService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+<h3>Crear Idioma</h3>
+
+<IdiomaFormularioVista @ref="insForm" idioma="idioma" OnValidSubmit="Crear" Cancelar="Navegar"></IdiomaFormularioVista>
+
+@code {
+    private Idioma idioma = new();
+    private IdiomaFormularioVista? insForm;
+
+    private async Task Crear()
+    {
+        idioma.Estado = "Activo";
+        bool respuesta = await servicioIdioma.InsertarIdioma(idioma);
+        if (respuesta)
+        {
+            await sweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Agregar Idioma",
+                    Text = "El Idioma fue guardado existosamente!",
+                    Icon = SweetAlertIcon.Success,
+                }
+            );
+            Navegar();
+        }
+        else
+        {
+            await sweetAlertService.FireAsync(new SweetAlertOptions
+                {
+                    Title = "Error Servicio",
+                    Text = "Se produjo un error al realizar la transaccion!",
+                    Icon = SweetAlertIcon.Error,
+                }
+            );
+        }
+    }
+
+    private void Navegar()
+    {
+        insForm!.formularioPostOk = true;
+        NavigationManager.NavigateTo("./idiomas");
+    }
+}

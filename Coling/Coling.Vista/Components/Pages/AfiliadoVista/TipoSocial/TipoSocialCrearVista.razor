@@ -1,0 +1,30 @@
+﻿@page "/tiposocial/crear"
+@inject ITipoSocialService servicioTipoSocial
+@inject SweetAlertService sweetAlertService
+@inject Microsoft.AspNetCore.Components.NavigationManager NavigationManager
+
+<h3>Crear Tipo Social</h3>
+
+<TipoSocialFormularioVista @ref="insForm" tipoSocial="tipoSocial" OnValidSubmit="Crear" Cancelar="Navegar"></TipoSocialFormularioVista>
+
+@code {
+    private TipoSocial tipoSocial = new();
+    private TipoSocialFormularioVista? insForm;
+
+    private async Task Crear()
+    {
+        var respuesta = await servicioTipoSocial.InsertarTipoSocial(tipoSocial);
+        if (!respuesta)
+        {
+            await sweetAlertService.FireAsync("Error", "No se pudo guardar", SweetAlertIcon.Error);
+            return;
+        }
+        Navegar();
+    }
+
+    private void Navegar()
+    {
+        insForm!.formularioPostOk = true;
+        NavigationManager.NavigateTo("./tiposocial");
+    }
+}
